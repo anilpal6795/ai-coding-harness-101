@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Pi Course — Build a Coding Agent Harness</title>
+		<meta
+			name="description"
+			content="A self-paced course on building a production-grade coding agent CLI from scratch."
+		/>
+		<script>
+			// Apply theme as early as possible to avoid flash.
+			(() => {
+				try {
+					const stored = localStorage.getItem("pi-course-theme");
+					const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+					const theme = stored || (prefersDark ? "dark" : "light");
+					if (theme === "dark") document.documentElement.classList.add("dark");
+				} catch {}
+			})();
+		</script>
+	</head>
+	<body>
+		<course-app></course-app>
+		<script type="module" src="/src/main.ts"></script>
+	</body>
+</html>

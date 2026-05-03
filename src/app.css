@@ -1,0 +1,288 @@
+@import "tailwindcss";
+@import "highlight.js/styles/github.css" layer(base);
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* highlight.js dark theme — applied only when .dark is on the root */
+@layer base {
+	.dark .hljs {
+		background: #0d1117 !important;
+		color: #c9d1d9 !important;
+	}
+	.dark .hljs-comment,
+	.dark .hljs-quote {
+		color: #8b949e !important;
+	}
+	.dark .hljs-keyword,
+	.dark .hljs-selector-tag,
+	.dark .hljs-section,
+	.dark .hljs-title,
+	.dark .hljs-name,
+	.dark .hljs-strong {
+		color: #ff7b72 !important;
+	}
+	.dark .hljs-string,
+	.dark .hljs-attr,
+	.dark .hljs-symbol,
+	.dark .hljs-bullet {
+		color: #a5d6ff !important;
+	}
+	.dark .hljs-built_in,
+	.dark .hljs-type,
+	.dark .hljs-class,
+	.dark .hljs-number,
+	.dark .hljs-literal {
+		color: #79c0ff !important;
+	}
+	.dark .hljs-variable,
+	.dark .hljs-template-variable {
+		color: #ffa657 !important;
+	}
+	.dark .hljs-function,
+	.dark .hljs-meta {
+		color: #d2a8ff !important;
+	}
+	.dark .hljs-tag,
+	.dark .hljs-deletion {
+		color: #ffa198 !important;
+	}
+	.dark .hljs-addition {
+		color: #aff5b4 !important;
+	}
+}
+
+@theme {
+	--color-background: #ffffff;
+	--color-foreground: #0f172a;
+	--color-muted: #64748b;
+	--color-muted-foreground: #475569;
+	--color-border: #e2e8f0;
+	--color-card: #f8fafc;
+	--color-accent: #2563eb;
+	--color-accent-hover: #1d4ed8;
+	--color-code-bg: #f1f5f9;
+	--font-sans:
+		ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+	--font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+@layer base {
+	.dark {
+		--color-background: #0b1020;
+		--color-foreground: #e2e8f0;
+		--color-muted: #94a3b8;
+		--color-muted-foreground: #cbd5e1;
+		--color-border: #1f2937;
+		--color-card: #111827;
+		--color-accent: #60a5fa;
+		--color-accent-hover: #93c5fd;
+		--color-code-bg: #0f172a;
+	}
+
+	html {
+		scroll-behavior: smooth;
+	}
+	body {
+		background-color: var(--color-background);
+		color: var(--color-foreground);
+		font-family: var(--font-sans);
+		-webkit-font-smoothing: antialiased;
+	}
+	::selection {
+		background: color-mix(in srgb, var(--color-accent) 35%, transparent);
+	}
+}
+
+/* ============================================================
+   Prose — markdown rendered into <article class="prose">.
+   Hand-tuned to feel like a docs site without pulling
+   @tailwindcss/typography.
+   ============================================================ */
+.prose {
+	color: var(--color-foreground);
+	line-height: 1.7;
+	font-size: 1rem;
+	max-width: 72ch;
+}
+
+.prose > * + * {
+	margin-top: 1.1em;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+	color: var(--color-foreground);
+	font-weight: 700;
+	scroll-margin-top: 5rem;
+	letter-spacing: -0.01em;
+}
+.prose h1 {
+	font-size: 2.1rem;
+	margin-top: 0;
+	margin-bottom: 0.8em;
+	line-height: 1.2;
+	padding-bottom: 0.4em;
+	border-bottom: 1px solid var(--color-border);
+}
+.prose h2 {
+	font-size: 1.55rem;
+	margin-top: 2.2em;
+	margin-bottom: 0.6em;
+	line-height: 1.3;
+}
+.prose h3 {
+	font-size: 1.2rem;
+	margin-top: 1.8em;
+	margin-bottom: 0.4em;
+	line-height: 1.4;
+}
+.prose h4 {
+	font-size: 1.05rem;
+	margin-top: 1.5em;
+	margin-bottom: 0.3em;
+}
+
+.prose .header-anchor {
+	color: var(--color-muted);
+	text-decoration: none;
+	margin-left: 0.4rem;
+	opacity: 0;
+	transition: opacity 120ms ease;
+	font-weight: 400;
+}
+.prose h1:hover .header-anchor,
+.prose h2:hover .header-anchor,
+.prose h3:hover .header-anchor,
+.prose h4:hover .header-anchor {
+	opacity: 1;
+}
+
+.prose p {
+	margin: 1em 0;
+}
+
+.prose a {
+	color: var(--color-accent);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1px;
+}
+.prose a:hover {
+	color: var(--color-accent-hover);
+}
+
+.prose strong {
+	color: var(--color-foreground);
+	font-weight: 700;
+}
+.prose em {
+	font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+	padding-left: 1.5em;
+	margin: 1em 0;
+}
+.prose ul {
+	list-style: disc;
+}
+.prose ol {
+	list-style: decimal;
+}
+.prose li {
+	margin: 0.4em 0;
+}
+.prose li > ul,
+.prose li > ol {
+	margin: 0.4em 0;
+}
+
+.prose blockquote {
+	margin: 1.4em 0;
+	padding: 0.6em 1em;
+	border-left: 3px solid var(--color-accent);
+	background: var(--color-card);
+	border-radius: 0 6px 6px 0;
+	color: var(--color-muted-foreground);
+	font-style: italic;
+}
+.prose blockquote p {
+	margin: 0.4em 0;
+}
+
+.prose hr {
+	border: 0;
+	border-top: 1px solid var(--color-border);
+	margin: 2em 0;
+}
+
+.prose code {
+	font-family: var(--font-mono);
+	font-size: 0.875em;
+	background: var(--color-code-bg);
+	color: var(--color-foreground);
+	padding: 0.15em 0.4em;
+	border-radius: 4px;
+	border: 1px solid var(--color-border);
+}
+
+.prose pre {
+	font-family: var(--font-mono);
+	font-size: 0.875em;
+	background: var(--color-code-bg);
+	color: var(--color-foreground);
+	padding: 1em 1.2em;
+	border-radius: 8px;
+	border: 1px solid var(--color-border);
+	overflow-x: auto;
+	line-height: 1.55;
+	position: relative;
+}
+.prose pre code {
+	background: transparent;
+	border: 0;
+	padding: 0;
+	font-size: inherit;
+	color: inherit;
+}
+
+.prose table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1.4em 0;
+	font-size: 0.95em;
+	display: block;
+	overflow-x: auto;
+}
+.prose th,
+.prose td {
+	border: 1px solid var(--color-border);
+	padding: 0.5em 0.8em;
+	text-align: left;
+}
+.prose th {
+	background: var(--color-card);
+	font-weight: 600;
+}
+
+.prose img {
+	max-width: 100%;
+	border-radius: 6px;
+	border: 1px solid var(--color-border);
+}
+
+/* Sidebar/TOC custom scrollbar */
+.scroll-thin::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+	background: var(--color-border);
+	border-radius: 4px;
+}
+.scroll-thin::-webkit-scrollbar-thumb:hover {
+	background: var(--color-muted);
+}
