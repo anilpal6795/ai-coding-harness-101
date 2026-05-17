@@ -1,5 +1,7 @@
 # Agent Harness 101
 
+**Read it live → https://ai-coding-harness-101.vercel.app/**
+
 A self-paced course on building a production-grade coding agent CLI from
 scratch — read it as a [documentation-style web app](./content/).
 
