@@ -1,4 +1,4 @@
-# Lesson 9.2: Extension API Design
+# Extension API Design
 
 If you decide to add an extension API, design it carefully. You're committing to keeping it stable.
 

@@ -1,4 +1,4 @@
-# Chapter 3: Tools — Defining and Executing
+# Tools — Defining and Executing
 
 Tools are how the LLM acts in the world. This chapter covers everything about them: how to define them, validate calls, execute them, handle errors, and stream their progress.
 

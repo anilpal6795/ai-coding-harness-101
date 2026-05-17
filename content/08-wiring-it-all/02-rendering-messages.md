@@ -1,4 +1,4 @@
-# Lesson 8.2: Rendering Messages
+# Rendering Messages
 
 Each message type gets its own component. This lesson covers the patterns and shows minimal implementations.
 

@@ -1,4 +1,4 @@
-# Lesson 3.2: Schemas with TypeBox
+# Schemas with TypeBox
 
 We need to define tool parameters in a way that's:
 

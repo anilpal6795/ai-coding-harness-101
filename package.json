@@ -12,11 +12,11 @@
 		"clean": "shx rm -rf dist"
 	},
 	"dependencies": {
-		"highlight.js": "^11.10.0",
 		"lit": "^3.3.1",
 		"lucide": "^0.544.0",
 		"markdown-it": "^14.1.0",
-		"markdown-it-anchor": "^9.2.0"
+		"markdown-it-anchor": "^9.2.0",
+		"shiki": "^4.0.2"
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "^4.1.17",

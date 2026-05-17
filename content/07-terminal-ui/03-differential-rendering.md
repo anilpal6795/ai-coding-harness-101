@@ -1,4 +1,4 @@
-# Lesson 7.3: Differential Rendering
+# Differential Rendering
 
 A naive renderer redraws the whole screen on every update. That's slow and flickery. **Differential rendering** updates only what changed.
 

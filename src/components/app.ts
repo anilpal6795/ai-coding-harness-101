@@ -1,8 +1,8 @@
 import { LitElement, html, nothing } from "lit";
 import { customElement, state } from "lit/decorators.js";
-import { BookOpen, Menu, Moon, Sun, X } from "lucide";
+import { BookOpen, Github, Menu, Moon, Sun, X } from "lucide";
 import { type Chapter, type CourseTree, findPage, getNeighbors, type Lesson, loadCourse } from "../lib/content.js";
-import { type Heading, renderMarkdown } from "../lib/markdown.js";
+import { ensureHighlighter, type Heading, renderMarkdown } from "../lib/markdown.js";
 import { onRouteChange, parseHash, type Route } from "../lib/router.js";
 import "./content.js";
 import "./sidebar.js";
@@ -34,13 +34,43 @@ export class CourseApp extends LitElement {
 		this.unsubscribe = onRouteChange((r) => this.handleRoute(r));
 		this.handleRoute(this.route);
 		this.applyTheme();
+		// Kick off the Shiki highlighter, then re-render the current route so
+		// the first paint's plain code blocks pick up syntax colors.
+		ensureHighlighter().then(() => this.handleRoute(this.route));
+		this.addEventListener("click", this.handleCopyClick);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this.unsubscribe?.();
 		this.unsubscribe = null;
+		this.removeEventListener("click", this.handleCopyClick);
 	}
+
+	private handleCopyClick = (ev: MouseEvent) => {
+		const target = ev.target as HTMLElement | null;
+		const btn = target?.closest<HTMLButtonElement>("button.code-block-copy");
+		if (!btn) return;
+		const code = btn.getAttribute("data-code") ?? "";
+		const label = btn.querySelector(".code-block-copy-label");
+		const restore = label?.textContent ?? "Copy";
+		void navigator.clipboard
+			.writeText(code)
+			.then(() => {
+				if (label) label.textContent = "Copied";
+				btn.classList.add("is-copied");
+				setTimeout(() => {
+					if (label) label.textContent = restore;
+					btn.classList.remove("is-copied");
+				}, 1600);
+			})
+			.catch(() => {
+				if (label) label.textContent = "Failed";
+				setTimeout(() => {
+					if (label) label.textContent = restore;
+				}, 1600);
+			});
+	};
 
 	private handleRoute(route: Route) {
 		this.route = route;
@@ -69,13 +99,12 @@ export class CourseApp extends LitElement {
 				return;
 			}
 		}
-		// Default: scroll the main content region to the top.
-		const main = this.querySelector("[data-content-scroll]");
-		if (main && "scrollTo" in main) {
-			(main as HTMLElement).scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-		} else {
-			window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-		}
+		// The page scrolls at the window level (the sticky sidebars share that
+		// scroll container), so reset window scroll on route change. We also
+		// reset the main element in case its overflow is ever changed to auto.
+		window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+		const main = this.querySelector<HTMLElement>("[data-content-scroll]");
+		main?.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
 	}
 
 	private toggleTheme = () => {
@@ -148,7 +177,7 @@ export class CourseApp extends LitElement {
 					</button>
 					<a href="#/" class="flex items-center gap-2 font-semibold text-[var(--color-foreground)]">
 						${lucideIcon(BookOpen, "w-5 h-5 text-[var(--color-accent)]")}
-						<span>Pi Course</span>
+						<span>Coding harness guide - Pi</span>
 					</a>
 					${subtitle
 						? html`<span class="hidden md:block text-sm text-[var(--color-muted)] truncate">— ${subtitle}</span>`
@@ -158,9 +187,21 @@ export class CourseApp extends LitElement {
 						href="https://github.com/badlogic/pi-mono"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="hidden sm:inline-block text-sm text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)]"
+						title="Pi-mono on GitHub"
+						aria-label="Pi-mono on GitHub"
+						class="flex h-9 w-9 items-center justify-center rounded-md text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] hover:bg-[var(--color-card)]"
 					>
-						GitHub
+						${this.renderPiLogo()}
+					</a>
+					<a
+						href="https://github.com/anilpal6795/agent-harness-101"
+						target="_blank"
+						rel="noopener noreferrer"
+						title="This guide's repository on GitHub"
+						aria-label="This guide's repository on GitHub"
+						class="flex h-9 w-9 items-center justify-center rounded-md text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] hover:bg-[var(--color-card)]"
+					>
+						${lucideIcon(Github, "w-4 h-4")}
 					</a>
 					<button
 						type="button"
@@ -172,6 +213,27 @@ export class CourseApp extends LitElement {
 					</button>
 				</div>
 			</header>
+		`;
+	}
+
+	private renderPiLogo() {
+		// Pi's brand mark, sourced from https://pi.dev/logo-auto.svg.
+		// We use `currentColor` so the icon inherits the button's text color
+		// and follows our light/dark theme toggle.
+		return html`
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 800 800"
+				class="w-4 h-4"
+				aria-hidden="true"
+			>
+				<path
+					fill="currentColor"
+					fill-rule="evenodd"
+					d="M165.29 165.29 H517.36 V400 H400 V517.36 H282.65 V634.72 H165.29 Z M282.65 282.65 V400 H400 V282.65 Z"
+				/>
+				<path fill="currentColor" d="M517.36 400 H634.72 V634.72 H517.36 Z" />
+			</svg>
 		`;
 	}
 

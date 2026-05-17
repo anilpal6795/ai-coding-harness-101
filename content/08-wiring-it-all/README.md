@@ -1,4 +1,4 @@
-# Chapter 8: Wiring Agent + TUI
+# Wiring Agent + TUI
 
 You have an agent. You have a TUI. This chapter glues them together into a real coding agent CLI. By the end, you have mini-pi running interactively.
 

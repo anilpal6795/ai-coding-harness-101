@@ -1,4 +1,4 @@
-# Lesson 6.2: Loading and Resuming
+# Loading and Resuming
 
 You can write a session. Now: load it back, restore the agent, continue the conversation.
 

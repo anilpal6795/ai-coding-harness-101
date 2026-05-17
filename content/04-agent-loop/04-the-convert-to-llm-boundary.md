@@ -1,4 +1,4 @@
-# Lesson 4.4: The convertToLlm Boundary
+# The convertToLlm Boundary
 
 This is the most important design decision in the entire harness. Once you understand it, a lot of seemingly-mysterious things in pi click into place.
 

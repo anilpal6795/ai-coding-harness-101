@@ -1,4 +1,4 @@
-# Chapter 5: The Stateful Agent
+# The Stateful Agent
 
 The minimal loop from Chapter 4 is stateless. You call it, it runs, it returns. For a real coding agent, you need state that persists between user messages, plus a bunch of features that only make sense as a stateful object.
 

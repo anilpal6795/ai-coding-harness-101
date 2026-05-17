@@ -1,4 +1,4 @@
-# Lesson 7.5: Overlays and Focus
+# Overlays and Focus
 
 The final TUI piece: how to layer dialogs and modals on top of your main UI without rewriting the renderer for each one.
 

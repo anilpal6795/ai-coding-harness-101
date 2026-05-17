@@ -1,4 +1,4 @@
-# Lesson 5.5: Hooks and Error Handling
+# Hooks and Error Handling
 
 The final pieces: hooks for intercepting tool calls, and proper error handling for everything that can go wrong.
 

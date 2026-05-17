@@ -1,4 +1,4 @@
-# Lesson 5.4: Steering and Follow-up Queues
+# Steering and Follow-up Queues
 
 You've sent your agent on a long task. While it's working, you realize there's something it should know. You can't wait for it to finish. What now?
 

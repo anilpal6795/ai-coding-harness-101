@@ -1,19 +1,25 @@
-# Build a Coding Agent Harness Like Pi — From Scratch
+# Build an Agentic AI Harness Like Pi — From Scratch
 
-A self-paced course that walks you through every layer of a production-grade coding agent CLI. By the end, you'll have built your own working coding agent — and more importantly, you'll understand exactly what's happening at every layer of tools like Claude Code, Cursor, Aider, and pi itself.
+A guide on how to build an agentic AI harness, taking [pi-mono](https://github.com/badlogic/pi-mono) as the reference harness. It walks you through every layer of a production-grade coding agent CLI. By the end, you'll have a working mental model of what's actually happening inside tools like Claude Code, Cursor, Aider, and pi itself — and a small, working agent you built yourself.
 
 ---
 
-## Who this course is for
+> ⚠️ **A note on how this guide was written**
+>
+> This guide was written **with the help of AI**, working from a careful reading of the pi-mono codebase. It is best treated as a study companion, not a textbook. Some details may be **inaccurate, out of date, or oversimplified**, and the guide does **not** claim to be 100% correct. When something matters, verify it against the [pi-mono source](https://github.com/badlogic/pi-mono) or the official docs for the libraries involved. If you spot a mistake, please open an issue.
 
-You're the right student if:
+---
+
+## Who this guide is for
+
+You're the right reader if:
 
 - You've used a coding agent (Claude Code, Cursor, Aider, pi) and want to understand how it works under the hood
 - You can write TypeScript or JavaScript at an intermediate level
 - You've called an LLM API at least once (we'll go deeper, but you should know what an API key is)
 - You learn best by building, not by reading specs
 
-You're **not** the right student if:
+You're **not** the right reader if:
 
 - You're looking for prompt engineering tips (this isn't that)
 - You want a no-code "how to use ChatGPT" guide (also not that)
@@ -21,7 +27,7 @@ You're **not** the right student if:
 
 ## What you'll build
 
-By Chapter 10, you'll have built a working coding agent in roughly **1,500 lines of TypeScript** that can:
+By the end, you'll have built a working coding agent in roughly **1,500 lines of TypeScript** that can:
 
 - Stream responses from any LLM provider
 - Execute tools (read files, write files, run bash commands)
@@ -42,86 +48,86 @@ This is roughly the same architecture as `pi` itself, just smaller.
 
 That's it. No knowledge of agent frameworks, no LangChain experience, no ML background needed.
 
-## How to use this course
+## How to use this guide
 
 ### Recommended pace
 
-The course is **10 chapters**, each with 3-5 lessons. Estimated time investment:
+The guide is organized into **10 parts**, each with 3-5 sections. Estimated time investment:
 
-- **Light pace**: 1 chapter per week (~10 weeks)
-- **Standard pace**: 2 chapters per week (~5 weeks)
-- **Intensive**: 1 chapter per day (~10 days)
+- **Light pace**: 1 part per week (~10 weeks)
+- **Standard pace**: 2 parts per week (~5 weeks)
+- **Intensive**: 1 part per day (~10 days)
 
-Don't skip chapters — each one builds on the last. Especially do not skip Chapter 4 (The Agent Loop) — it's the centerpiece.
+Don't skip ahead — each part builds on the last. Especially do not skip "The Agent Loop" — it's the centerpiece.
 
-### How to consume each chapter
+### How to consume each part
 
-Every chapter follows this pattern:
+Every part follows this pattern:
 
-1. **Read the chapter README** — overview of what you'll learn
-2. **Work through lessons in order** — each is a focused topic, 10-30 minutes of reading
-3. **Run the examples** — most chapters have working code in `examples/` you can `npx tsx` directly
-4. **Do the exercises** — at the end of most chapters
-5. **Reference the real code** — every concept points to the equivalent in pi-mono so you can see "production" version
+1. **Read the part overview** — what you'll learn
+2. **Work through the sections in order** — each is a focused topic, 10-30 minutes of reading
+3. **Run the examples** — most parts have working code in `examples/` you can `npx tsx` directly
+4. **Do the exercises** — at the end of most parts
+5. **Reference the real code** — every concept points to the equivalent in pi-mono so you can see the "production" version
 
 ### A note on theory vs code
 
-This course is **theory-heavy by design**. The reason: the concepts are universal but the code rots. If you understand the concepts deeply, you can rebuild a coding agent in any language, on any provider, in any UI framework. If you only memorize code, you're stuck.
+This guide is **theory-heavy by design**. The reason: the concepts are universal but the code rots. If you understand the concepts deeply, you can rebuild an agent harness in any language, on any provider, in any UI framework. If you only memorize code, you're stuck.
 
-That said — every chapter has runnable code, and Chapters 4, 7, and 8 contain enough working code that you'll have a real agent by the end.
+That said — every part has runnable code, and the agent-loop, terminal-UI, and wiring sections contain enough working code that you'll have a real agent by the end.
 
 ---
 
-## Course outline
+## Outline
 
 ### Foundations
 
-**[Chapter 0: Introduction & Setup](./00-introduction/)**
+**[Introduction & Setup](./00-introduction/)**
 What you'll build. Setting up your project. How agent harnesses are structured.
 
-**[Chapter 1: Agent Fundamentals](./01-agent-fundamentals/)**
+**[Agent Fundamentals](./01-agent-fundamentals/)**
 What an agent actually is. The agentic loop. Why coding agents are special. The pi-mono mental model.
 
 ### The transport layer
 
-**[Chapter 2: The LLM Transport Layer](./02-llm-transport/)**
+**[The LLM Transport Layer](./02-llm-transport/)**
 How LLM APIs work. Streaming. Message formats. Building a normalized event protocol.
 
-**[Chapter 3: Tools — Defining and Executing](./03-tools/)**
+**[Tools — Defining and Executing](./03-tools/)**
 What tools look like to an LLM. JSON Schema and TypeBox. Validating arguments. Streaming partial JSON.
 
 ### The harness
 
-**[Chapter 4: The Agent Loop](./04-agent-loop/)**
+**[The Agent Loop](./04-agent-loop/)**
 The reactor pattern. Building a 50-line working agent loop. The `convertToLlm` boundary. Event subscription.
 
-**[Chapter 5: The Stateful Agent](./05-stateful-agent/)**
+**[The Stateful Agent](./05-stateful-agent/)**
 Wrapping the loop in a stateful class. Abort and cancellation. Steering & follow-up queues. Hooks. Error handling.
 
-**[Chapter 6: Sessions & Persistence](./06-sessions-persistence/)**
+**[Sessions & Persistence](./06-sessions-persistence/)**
 Why sessions matter. JSONL format. Branching and forking. Compaction strategies.
 
 ### The user interface
 
-**[Chapter 7: Building a Terminal UI](./07-terminal-ui/)**
+**[Building a Terminal UI](./07-terminal-ui/)**
 Terminal fundamentals (ANSI, escape codes). The component model. Differential rendering. Synchronized output. Input handling.
 
-**[Chapter 8: Wiring Agent + TUI](./08-wiring-it-all/)**
+**[Wiring Agent + TUI](./08-wiring-it-all/)**
 The interactive mode. Subscribing to agent events. Rendering messages and tool calls. Slash commands. The footer.
 
 ### Going to production
 
-**[Chapter 9: Extensibility](./09-extensibility/)**
+**[Extensibility](./09-extensibility/)**
 Why plugin systems matter. Designing an extension API. Loading TypeScript at runtime. Skills and prompt templates.
 
-**[Chapter 10: Going Beyond](./10-going-beyond/)**
+**[Going Beyond](./10-going-beyond/)**
 Multi-provider support. Alternate run modes (RPC, print). Where to take this next.
 
 ---
 
-## How this course relates to pi-mono
+## How this guide relates to pi-mono
 
-This entire course was written based on a careful reading of the [pi-mono](https://github.com/badlogic/pi-mono) codebase, which lives in this same repository. Throughout the course you'll see references like:
+This entire guide was written based on a careful reading of the [pi-mono](https://github.com/badlogic/pi-mono) codebase, which lives in this same repository. Throughout the guide you'll see references like:
 
 > See `packages/agent/src/agent-loop.ts:155` for the production version
 
@@ -131,7 +137,7 @@ You're encouraged to keep the pi-mono source open in another window. **Reading p
 
 ---
 
-## Conventions used in this course
+## Conventions used in this guide
 
 - **Code blocks** are TypeScript unless otherwise noted
 - **`packages/X/src/Y.ts:N`** points to a file and line in pi-mono
@@ -139,21 +145,21 @@ You're encouraged to keep the pi-mono source open in another window. **Reading p
 
 > 💡 **Deep dive**: Optional sections like this give you the "why" behind a design choice. Skip on first read; come back when you want to know more.
 
-- **Exercises** appear at the end of chapters — don't skip them
-- **"Stop and try this"** boxes mid-chapter ask you to pause and experiment
+- **Exercises** appear at the end of most parts — don't skip them
+- **"Stop and try this"** boxes mid-section ask you to pause and experiment
 
 ---
 
 ## Setting up
 
-Before Chapter 0, make sure you can run:
+Before you start, make sure you can run:
 
 ```bash
 node --version    # should be 20+
 npm --version     # any recent version
 ```
 
-If both work, you're ready. Head to **[Chapter 0: Introduction & Setup](./00-introduction/)**.
+If both work, you're ready. Head to **[Introduction & Setup](./00-introduction/)**.
 
 ---
 

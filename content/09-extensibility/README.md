@@ -1,4 +1,4 @@
-# Chapter 9: Extensibility
+# Extensibility
 
 Your coding agent can do a lot. But it can't do everything. Extensibility is how you let users (and yourself) add functionality without forking the code.
 

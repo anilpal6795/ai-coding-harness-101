@@ -1,4 +1,4 @@
-# Chapter 1: Agent Fundamentals
+# Agent Fundamentals
 
 Before writing any code, we need to be precise about *what an agent is*. The word is used loosely in the industry — let's pin it down.
 

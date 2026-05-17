@@ -1,4 +1,4 @@
-# Lesson 1.1: From Chatbot to Agent
+# From Chatbot to Agent
 
 ## The single conceptual jump
 

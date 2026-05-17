@@ -1,4 +1,4 @@
-# Lesson 6.4: Compaction
+# Compaction
 
 Long coding sessions accumulate tokens fast. Eventually you hit the context window. Compaction is how you keep going.
 

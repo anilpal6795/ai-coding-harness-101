@@ -1,4 +1,4 @@
-# Lesson 8.4: The Footer
+# The Footer
 
 A status line at the bottom that shows the current model, tokens used, cost, and other useful runtime info. This is the last UI component.
 

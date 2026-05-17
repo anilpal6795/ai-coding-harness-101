@@ -1,4 +1,4 @@
-# Lesson 3.3: The Execute Contract
+# The Execute Contract
 
 The `execute` function is where your tool actually does work. Its signature looks small but encodes important contracts.
 

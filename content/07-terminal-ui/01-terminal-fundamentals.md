@@ -1,4 +1,4 @@
-# Lesson 7.1: Terminal Fundamentals
+# Terminal Fundamentals
 
 To build a TUI you need to know what a terminal actually is. This lesson is a focused tour.
 

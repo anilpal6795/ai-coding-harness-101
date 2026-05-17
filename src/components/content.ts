@@ -39,7 +39,7 @@ export class CourseContent extends LitElement {
 		const breadcrumb = this.chapter
 			? html`
 					<nav class="text-xs text-[var(--color-muted)] mb-4 flex items-center gap-1.5">
-						<a href=${buildHash("/")} class="hover:text-[var(--color-foreground)]">Course</a>
+						<a href=${buildHash("/")} class="hover:text-[var(--color-foreground)]">Guide</a>
 						<span aria-hidden="true">/</span>
 						<a href=${buildHash(this.chapter.readme.path)} class="hover:text-[var(--color-foreground)]">
 							${this.chapter.title}

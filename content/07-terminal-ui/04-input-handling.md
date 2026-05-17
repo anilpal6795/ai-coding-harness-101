@@ -1,4 +1,4 @@
-# Lesson 7.4: Input Handling
+# Input Handling
 
 Reading keys from a terminal is messier than you'd think. This lesson covers the encoding, the parsing, and the focus model.
 

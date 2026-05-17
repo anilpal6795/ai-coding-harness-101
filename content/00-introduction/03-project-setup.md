@@ -1,4 +1,4 @@
-# Lesson 0.3: Project Setup
+# Project Setup
 
 Time to set up the project you'll build mini-pi in. This is short — we're not going to be too clever about tooling.
 

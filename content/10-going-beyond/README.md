@@ -1,4 +1,4 @@
-# Chapter 10: Going Beyond
+# Going Beyond
 
 You have a working coding agent. This chapter covers the things you didn't build but might want to next: multi-provider support, alternate run modes, and where to take it from here.
 

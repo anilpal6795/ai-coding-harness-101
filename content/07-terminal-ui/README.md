@@ -1,4 +1,4 @@
-# Chapter 7: Building a Terminal UI
+# Building a Terminal UI
 
 The agent and the UI are siblings. They don't depend on each other. This chapter is the entire UI side — terminals, components, rendering, input handling.
 

@@ -1,4 +1,4 @@
-# Lesson 4.2: The Minimal Loop
+# The Minimal Loop
 
 Time to build it. By the end of this lesson, your `mini-pi/src/agent/` folder will have a working agent loop you can run.
 

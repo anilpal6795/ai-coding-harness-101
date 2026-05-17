@@ -1,4 +1,4 @@
-# Chapter 4: The Agent Loop
+# The Agent Loop
 
 This is the heart of the entire course. By the end of this chapter, you'll have a working agent loop in ~100 lines of code that streams responses, executes tools, and handles multi-turn conversations.
 

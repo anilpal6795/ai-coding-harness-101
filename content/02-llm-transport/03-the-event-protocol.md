@@ -1,4 +1,4 @@
-# Lesson 2.3: The Event Protocol
+# The Event Protocol
 
 You've seen Anthropic's raw events. Now we design our own. This is the most important design decision in the transport layer.
 

@@ -1,4 +1,4 @@
-# Lesson 0.2: The Big Picture
+# The Big Picture
 
 This is the most important lesson in the entire course. If you internalize the layering pattern below, every chapter that follows clicks into place.
 

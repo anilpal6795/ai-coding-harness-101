@@ -1,4 +1,4 @@
-# Lesson 8.3: Slash Commands
+# Slash Commands
 
 Users want to do things that aren't conversations: switch models, see help, quit cleanly, reset the session. **Slash commands** are the convention.
 
