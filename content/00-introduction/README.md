@@ -1,4 +1,4 @@
-# Chapter 0: Introduction & Setup
+# Introduction & Setup
 
 Welcome to the course. This first chapter sets the stage: what you'll build, what you'll need, and how everything fits together.
 

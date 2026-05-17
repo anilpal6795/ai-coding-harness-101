@@ -1,4 +1,4 @@
-# Lesson 2.4: Building the Transport
+# Building the Transport
 
 Time to write code. By the end of this lesson, your `mini-pi/src/llm/` folder will have a working streaming client that emits the normalized events from Lesson 2.3.
 

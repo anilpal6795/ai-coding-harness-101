@@ -74,7 +74,7 @@ export class CourseSidebar extends LitElement {
 								href=${buildHash(this.rootPage.path)}
 								class=${this.linkClass(this.currentPath === "/")}
 							>
-								Course overview
+								Guide overview
 							</a>
 							<div class="my-2 border-t border-[var(--color-border)]"></div>
 						`
@@ -102,8 +102,7 @@ export class CourseSidebar extends LitElement {
 						href=${buildHash(ch.readme.path)}
 						class=${`flex-1 ${this.linkClass(chapterActive)} font-medium text-[var(--color-foreground)]`}
 					>
-						<span class="text-[var(--color-muted)] tabular-nums mr-1.5">${chapterNumber(ch)}</span>
-						${ch.readme.title}
+						${stripNumberPrefix(ch.readme.title)}
 					</a>
 				</div>
 				${collapsed
@@ -116,7 +115,7 @@ export class CourseSidebar extends LitElement {
 											href=${buildHash(lesson.path)}
 											class=${this.linkClass(this.currentPath === lesson.path, true)}
 										>
-											${lesson.title}
+											${stripNumberPrefix(lesson.title)}
 										</a>
 									`,
 								)}
@@ -127,6 +126,8 @@ export class CourseSidebar extends LitElement {
 	}
 }
 
-function chapterNumber(ch: Chapter): string {
-	return Number.isFinite(ch.order) ? String(ch.order).padStart(2, "0") : "";
+// Drops the leading "Chapter N:" or "Lesson X.Y:" prefix from a heading so the
+// nav shows just titles. Source markdown is left untouched.
+function stripNumberPrefix(title: string): string {
+	return title.replace(/^(?:chapter|lesson|part|section)\s+[\d.]+\s*[:.\-–—]\s*/i, "").trim();
 }

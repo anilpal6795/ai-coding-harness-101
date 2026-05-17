@@ -1,4 +1,4 @@
-# Lesson 2.1: LLM APIs 101
+# LLM APIs 101
 
 Before we build a transport layer, you need to know what we're transporting. This lesson covers how Anthropic's API works (and by extension, every other modern LLM API — they're 95% the same).
 

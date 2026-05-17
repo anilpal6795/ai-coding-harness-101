@@ -1,4 +1,4 @@
-# Chapter 6: Sessions & Persistence
+# Sessions & Persistence
 
 A coding agent without persistence is a chat interface. With persistence, it's a tool that survives across days, machines, and weeks of work. This chapter covers the disk format, branching, and compaction.
 

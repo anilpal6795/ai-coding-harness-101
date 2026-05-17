@@ -1,4 +1,4 @@
-# Lesson 0.1: What You'll Build
+# What You'll Build
 
 ## The end state
 

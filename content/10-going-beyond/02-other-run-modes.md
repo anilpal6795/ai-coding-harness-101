@@ -1,4 +1,4 @@
-# Lesson 10.2: Other Run Modes
+# Other Run Modes
 
 The interactive TUI is one way to use your agent. There are at least three others worth supporting.
 

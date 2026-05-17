@@ -1,4 +1,4 @@
-# Lesson 5.1: Why State Matters
+# Why State Matters
 
 The minimal loop in Chapter 4 was a function. Why bother wrapping it in a class?
 

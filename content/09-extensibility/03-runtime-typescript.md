@@ -1,4 +1,4 @@
-# Lesson 9.3: Loading TypeScript at Runtime
+# Loading TypeScript at Runtime
 
 Extensions are TypeScript files. Your host needs to load and execute them. The user shouldn't have to compile them first. This lesson covers how.
 

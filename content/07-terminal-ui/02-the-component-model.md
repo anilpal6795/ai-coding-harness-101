@@ -1,4 +1,4 @@
-# Lesson 7.2: The Component Model
+# The Component Model
 
 A TUI needs a way to organize what's on screen. Pi-tui uses a **component model**: small composable units, each responsible for rendering itself.
 

@@ -1,4 +1,4 @@
-# Lesson 9.1: Why Extensibility
+# Why Extensibility
 
 Should your coding agent have a plugin system? Most projects say yes; most should say no. This lesson covers when extensibility is actually worth it.
 

@@ -1,4 +1,4 @@
-# Lesson 4.3: Events and Subscription
+# Events and Subscription
 
 The loop emits events. UIs subscribe. This lesson is about why that pattern, and how to get the subscription mechanics right.
 

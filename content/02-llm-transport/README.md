@@ -1,4 +1,4 @@
-# Chapter 2: The LLM Transport Layer
+# The LLM Transport Layer
 
 This is the bottom layer — the one that actually talks to LLM providers. By the end of this chapter, you'll have built a working streaming LLM client with a normalized event protocol. This is what `pi-ai` does.
 

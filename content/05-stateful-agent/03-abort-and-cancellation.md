@@ -1,4 +1,4 @@
-# Lesson 5.3: Abort and Cancellation
+# Abort and Cancellation
 
 The user hits `Esc`. What happens? More than you'd think. This lesson covers it.
 

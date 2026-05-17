@@ -1,4 +1,4 @@
-# Lesson 10.3: Where to Go Next
+# Where to Go Next
 
 You finished the course. Here's what to do with it.
 

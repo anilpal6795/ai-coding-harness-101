@@ -1,82 +1,39 @@
 @import "tailwindcss";
-@import "highlight.js/styles/github.css" layer(base);
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* highlight.js dark theme — applied only when .dark is on the root */
-@layer base {
-	.dark .hljs {
-		background: #0d1117 !important;
-		color: #c9d1d9 !important;
-	}
-	.dark .hljs-comment,
-	.dark .hljs-quote {
-		color: #8b949e !important;
-	}
-	.dark .hljs-keyword,
-	.dark .hljs-selector-tag,
-	.dark .hljs-section,
-	.dark .hljs-title,
-	.dark .hljs-name,
-	.dark .hljs-strong {
-		color: #ff7b72 !important;
-	}
-	.dark .hljs-string,
-	.dark .hljs-attr,
-	.dark .hljs-symbol,
-	.dark .hljs-bullet {
-		color: #a5d6ff !important;
-	}
-	.dark .hljs-built_in,
-	.dark .hljs-type,
-	.dark .hljs-class,
-	.dark .hljs-number,
-	.dark .hljs-literal {
-		color: #79c0ff !important;
-	}
-	.dark .hljs-variable,
-	.dark .hljs-template-variable {
-		color: #ffa657 !important;
-	}
-	.dark .hljs-function,
-	.dark .hljs-meta {
-		color: #d2a8ff !important;
-	}
-	.dark .hljs-tag,
-	.dark .hljs-deletion {
-		color: #ffa198 !important;
-	}
-	.dark .hljs-addition {
-		color: #aff5b4 !important;
-	}
-}
-
 @theme {
+	/* Light: warm stone neutrals, violet accent. */
 	--color-background: #ffffff;
-	--color-foreground: #0f172a;
-	--color-muted: #64748b;
-	--color-muted-foreground: #475569;
-	--color-border: #e2e8f0;
-	--color-card: #f8fafc;
-	--color-accent: #2563eb;
-	--color-accent-hover: #1d4ed8;
-	--color-code-bg: #f1f5f9;
+	--color-foreground: #0c0a09;
+	--color-muted: #78716c;
+	--color-muted-foreground: #57534e;
+	--color-border: #e7e5e4;
+	--color-card: #fafaf9;
+	--color-accent: #7c3aed;
+	--color-accent-hover: #6d28d9;
+	--color-code-bg: #fafaf9;
+	--color-code-header-bg: #f5f5f4;
 	--font-sans:
-		ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-	--font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+		"Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+		sans-serif;
+	--font-mono:
+		"Geist Mono", ui-monospace, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 @layer base {
 	.dark {
-		--color-background: #0b1020;
-		--color-foreground: #e2e8f0;
-		--color-muted: #94a3b8;
-		--color-muted-foreground: #cbd5e1;
-		--color-border: #1f2937;
-		--color-card: #111827;
-		--color-accent: #60a5fa;
-		--color-accent-hover: #93c5fd;
-		--color-code-bg: #0f172a;
+		/* Dark: deep stone surfaces, violet accent. */
+		--color-background: #0c0a09;
+		--color-foreground: #fafaf9;
+		--color-muted: #78716c;
+		--color-muted-foreground: #a8a29e;
+		--color-border: #292524;
+		--color-card: #1c1917;
+		--color-accent: #a78bfa;
+		--color-accent-hover: #c4b5fd;
+		--color-code-bg: #1c1917;
+		--color-code-header-bg: #292524;
 	}
 
 	html {
@@ -100,13 +57,13 @@
    ============================================================ */
 .prose {
 	color: var(--color-foreground);
-	line-height: 1.7;
+	line-height: 1.65;
 	font-size: 1rem;
 	max-width: 72ch;
 }
 
 .prose > * + * {
-	margin-top: 1.1em;
+	margin-top: 0.9em;
 }
 
 .prose h1,
@@ -121,27 +78,27 @@
 .prose h1 {
 	font-size: 2.1rem;
 	margin-top: 0;
-	margin-bottom: 0.8em;
+	margin-bottom: 0.6em;
 	line-height: 1.2;
 	padding-bottom: 0.4em;
 	border-bottom: 1px solid var(--color-border);
 }
 .prose h2 {
 	font-size: 1.55rem;
-	margin-top: 2.2em;
-	margin-bottom: 0.6em;
+	margin-top: 1.8em;
+	margin-bottom: 0.25em;
 	line-height: 1.3;
 }
 .prose h3 {
 	font-size: 1.2rem;
-	margin-top: 1.8em;
-	margin-bottom: 0.4em;
+	margin-top: 1.4em;
+	margin-bottom: 0.2em;
 	line-height: 1.4;
 }
 .prose h4 {
 	font-size: 1.05rem;
-	margin-top: 1.5em;
-	margin-bottom: 0.3em;
+	margin-top: 1.2em;
+	margin-bottom: 0.15em;
 }
 
 .prose .header-anchor {
@@ -222,31 +179,11 @@
 .prose code {
 	font-family: var(--font-mono);
 	font-size: 0.875em;
-	background: var(--color-code-bg);
+	background: var(--color-card);
 	color: var(--color-foreground);
 	padding: 0.15em 0.4em;
 	border-radius: 4px;
 	border: 1px solid var(--color-border);
-}
-
-.prose pre {
-	font-family: var(--font-mono);
-	font-size: 0.875em;
-	background: var(--color-code-bg);
-	color: var(--color-foreground);
-	padding: 1em 1.2em;
-	border-radius: 8px;
-	border: 1px solid var(--color-border);
-	overflow-x: auto;
-	line-height: 1.55;
-	position: relative;
-}
-.prose pre code {
-	background: transparent;
-	border: 0;
-	padding: 0;
-	font-size: inherit;
-	color: inherit;
 }
 
 .prose table {
@@ -272,6 +209,113 @@
 	max-width: 100%;
 	border-radius: 6px;
 	border: 1px solid var(--color-border);
+}
+
+/* Tighten the gap between a heading and the element directly under it.
+   Placed last so it overrides element-specific top margins (.prose p,
+   .prose ul, .prose blockquote, etc.) by source order. */
+.prose h1 + *,
+.prose h2 + *,
+.prose h3 + *,
+.prose h4 + * {
+	margin-top: 0.4em;
+}
+.prose h1 + p,
+.prose h2 + p,
+.prose h3 + p,
+.prose h4 + p {
+	margin-top: 0.4em;
+}
+
+/* ============================================================
+   Code blocks — Shiki dual-theme output wrapped in a header
+   showing the language and a copy button.
+   ============================================================ */
+.prose .code-block {
+	margin: 1.2em 0;
+	border-radius: 8px;
+	border: 1px solid var(--color-border);
+	overflow: hidden;
+	background: var(--color-code-bg);
+}
+
+.code-block-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.4em 0.85em;
+	background: var(--color-code-header-bg);
+	border-bottom: 1px solid var(--color-border);
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+}
+
+.code-block-lang {
+	color: var(--color-muted-foreground);
+	text-transform: lowercase;
+	letter-spacing: 0.02em;
+}
+
+.code-block-copy {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	padding: 0.2em 0.55em;
+	border-radius: 5px;
+	border: 1px solid transparent;
+	background: transparent;
+	color: var(--color-muted-foreground);
+	font-family: var(--font-mono);
+	font-size: 0.75rem;
+	cursor: pointer;
+	transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.code-block-copy:hover {
+	background: color-mix(in srgb, var(--color-foreground) 8%, transparent);
+	color: var(--color-foreground);
+	border-color: var(--color-border);
+}
+.code-block-copy.is-copied {
+	color: var(--color-accent);
+	border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+.code-block-body {
+	overflow-x: auto;
+	background: var(--color-code-bg);
+}
+.code-block-body pre.shiki {
+	margin: 0;
+	padding: 1em 1.2em;
+	background: var(--color-code-bg) !important;
+	font-family: var(--font-mono);
+	font-size: 0.875em;
+	line-height: 1.55;
+}
+.code-block-body pre.shiki code {
+	background: transparent;
+	border: 0;
+	padding: 0;
+	font-size: inherit;
+	color: inherit;
+	display: block;
+}
+
+/* Shiki dual-theme: github-light by default, github-dark when .dark is on. */
+.shiki,
+.shiki span {
+	color: var(--shiki-light);
+	background-color: transparent !important;
+}
+.dark .shiki,
+.dark .shiki span {
+	color: var(--shiki-dark);
+}
+
+/* Fallback rendering while Shiki is still loading. */
+.shiki-fallback {
+	color: var(--color-foreground);
+	background: var(--color-code-bg) !important;
 }
 
 /* Sidebar/TOC custom scrollbar */

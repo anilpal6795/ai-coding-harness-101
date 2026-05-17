@@ -1,4 +1,4 @@
-# Lesson 8.1: The Interactive Mode
+# The Interactive Mode
 
 This is the layer that owns both the Agent and the TUI and translates between them. In pi, it's `interactive-mode.ts`. In mini-pi, we'll call it the same.
 

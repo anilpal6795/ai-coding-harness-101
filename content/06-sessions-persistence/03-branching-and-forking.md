@@ -1,4 +1,4 @@
-# Lesson 6.3: Branching and Forking
+# Branching and Forking
 
 Sessions get long. Sometimes you want to go back to a previous point and try a different approach. This is what branching gives you.
 

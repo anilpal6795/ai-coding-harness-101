@@ -1,4 +1,4 @@
-# Lesson 6.1: The JSONL Session Format
+# The JSONL Session Format
 
 How do you save a conversation to disk in a way that's:
 

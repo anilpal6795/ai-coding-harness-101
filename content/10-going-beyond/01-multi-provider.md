@@ -1,4 +1,4 @@
-# Lesson 10.1: Multi-Provider Support
+# Multi-Provider Support
 
 Mini-pi only supports Anthropic. Real users want OpenAI, Google, local models, etc. This lesson covers how to add them without rewriting your agent.
 

@@ -1,6 +1,6 @@
-import hljs from "highlight.js/lib/common";
 import MarkdownIt from "markdown-it";
 import anchor from "markdown-it-anchor";
+import { type HighlighterCore, createHighlighter } from "shiki";
 import { normalizePath } from "./content.js";
 
 export interface Heading {
@@ -23,25 +23,135 @@ function escapeHtml(s: string): string {
 		.replace(/'/g, "&#39;");
 }
 
+// Shiki is heavy and async to initialize, so we lazy-load a singleton on the
+// first render. While it loads, code blocks fall back to plain <pre><code> and
+// re-highlight after `ensureHighlighter()` resolves (the app re-renders the
+// current route once the promise settles).
+const SUPPORTED_LANGS = [
+	"typescript",
+	"javascript",
+	"tsx",
+	"jsx",
+	"json",
+	"jsonc",
+	"bash",
+	"shell",
+	"sh",
+	"zsh",
+	"html",
+	"css",
+	"scss",
+	"markdown",
+	"md",
+	"python",
+	"go",
+	"rust",
+	"sql",
+	"yaml",
+	"toml",
+	"diff",
+	"docker",
+	"plaintext",
+	"text",
+] as const;
+
+let highlighter: HighlighterCore | null = null;
+let highlighterPromise: Promise<HighlighterCore> | null = null;
+
+export function ensureHighlighter(): Promise<HighlighterCore> {
+	if (highlighter) return Promise.resolve(highlighter);
+	if (!highlighterPromise) {
+		highlighterPromise = createHighlighter({
+			themes: ["github-light", "github-dark"],
+			langs: SUPPORTED_LANGS as unknown as string[],
+		}).then((hl) => {
+			highlighter = hl as HighlighterCore;
+			return highlighter;
+		});
+	}
+	return highlighterPromise;
+}
+
+// Normalize a markdown fence info string to a language we have loaded.
+function normalizeLang(raw: string): { lang: string; label: string } {
+	const trimmed = (raw || "").trim().toLowerCase();
+	if (!trimmed) return { lang: "plaintext", label: "text" };
+	const aliasMap: Record<string, string> = {
+		ts: "typescript",
+		js: "javascript",
+		sh: "bash",
+		shell: "bash",
+		zsh: "bash",
+		py: "python",
+		yml: "yaml",
+		md: "markdown",
+		dockerfile: "docker",
+		text: "plaintext",
+		plain: "plaintext",
+	};
+	const lang = aliasMap[trimmed] ?? trimmed;
+	const labelMap: Record<string, string> = {
+		typescript: "ts",
+		javascript: "js",
+		bash: "bash",
+		json: "json",
+		jsonc: "jsonc",
+		yaml: "yaml",
+		markdown: "md",
+		python: "py",
+		plaintext: "text",
+	};
+	const label = labelMap[lang] ?? lang;
+	return { lang, label };
+}
+
+function renderCodeBlock(code: string, rawLang: string): string {
+	const { lang, label } = normalizeLang(rawLang);
+	const supported = (SUPPORTED_LANGS as readonly string[]).includes(lang);
+	const targetLang = supported ? lang : "plaintext";
+
+	let inner: string;
+	if (highlighter) {
+		inner = highlighter.codeToHtml(code, {
+			lang: targetLang,
+			themes: { light: "github-light", dark: "github-dark" },
+			defaultColor: false,
+		});
+	} else {
+		// Pre-highlighter fallback. Once the highlighter loads the app will
+		// re-render and replace this with the themed version.
+		inner = `<pre class="shiki shiki-fallback"><code>${escapeHtml(code)}</code></pre>`;
+	}
+
+	const encoded = escapeHtml(code).replace(/\n/g, "&#10;");
+	return `<div class="code-block" data-lang="${escapeHtml(label)}">
+<div class="code-block-header">
+  <span class="code-block-lang">${escapeHtml(label)}</span>
+  <button type="button" class="code-block-copy" data-code="${encoded}" aria-label="Copy code">
+    <span class="code-block-copy-label">Copy</span>
+  </button>
+</div>
+<div class="code-block-body">${inner}</div>
+</div>`;
+}
+
 const md: MarkdownIt = new MarkdownIt({
 	html: true,
 	linkify: true,
 	typographer: false,
 	breaks: false,
-	highlight(code: string, lang: string): string {
-		const language = lang && hljs.getLanguage(lang) ? lang : "";
-		try {
-			if (language) {
-				const out = hljs.highlight(code, { language, ignoreIllegals: true }).value;
-				return `<pre class="hljs"><code class="hljs language-${language}">${out}</code></pre>`;
-			}
-			const out = hljs.highlightAuto(code).value;
-			return `<pre class="hljs"><code class="hljs">${out}</code></pre>`;
-		} catch {
-			return `<pre class="hljs"><code>${escapeHtml(code)}</code></pre>`;
-		}
-	},
 });
+
+// Render fenced code blocks via our own wrapper. We override the fence rule
+// (rather than passing `highlight`) because markdown-it auto-wraps the
+// highlight return in <pre><code> unless it starts with "<pre", and our
+// output begins with a <div>. Overriding fence sidesteps that wrapping
+// entirely.
+md.renderer.rules.fence = (tokens, idx) => {
+	const token = tokens[idx];
+	const lang = token.info ? token.info.trim().split(/\s+/)[0] : "";
+	return renderCodeBlock(token.content, lang);
+};
 
 md.use(anchor, {
 	permalink: anchor.permalink.linkAfterHeader({
@@ -62,10 +172,10 @@ md.use(anchor, {
 
 // Rewrite relative links so they route within the SPA.
 //
-// The course markdown contains links like:
-//   [Chapter 0: Introduction & Setup](./00-introduction/)
-//   [Lesson](./02-the-big-picture.md)
-//   [Cross-chapter](../03-tools/02-schemas.md)
+// The guide markdown contains links like:
+//   [Introduction & Setup](./00-introduction/)
+//   [Section](./02-the-big-picture.md)
+//   [Cross-link](../03-tools/02-schemas.md)
 // We translate those into hash routes (`#/00-introduction/`, etc.) that the
 // router understands. External links (http/mailto/etc.) and in-page anchors
 // are left alone, but external links also get target="_blank" for safety.

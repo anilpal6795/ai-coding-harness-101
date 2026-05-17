@@ -1,4 +1,4 @@
-# Lesson 4.1: The Reactor Pattern
+# The Reactor Pattern
 
 Before writing the loop, let's understand its shape: the **reactor pattern**.
 

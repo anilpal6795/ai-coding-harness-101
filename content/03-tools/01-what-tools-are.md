@@ -1,4 +1,4 @@
-# Lesson 3.1: What Tools Are
+# What Tools Are
 
 Two perspectives matter here: how the LLM sees tools, and how your harness sees them.
 

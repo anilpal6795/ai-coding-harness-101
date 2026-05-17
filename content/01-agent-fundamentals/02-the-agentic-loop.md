@@ -1,4 +1,4 @@
-# Lesson 1.2: The Agentic Loop
+# The Agentic Loop
 
 We saw the 10-line agent in the last lesson. Now let's blow it up into the full pattern that every production agent — pi, Claude Code, Cursor, Aider — actually uses.
 

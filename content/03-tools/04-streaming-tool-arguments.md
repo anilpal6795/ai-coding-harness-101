@@ -1,4 +1,4 @@
-# Lesson 3.4: Streaming Tool Arguments
+# Streaming Tool Arguments
 
 This lesson covers a small but consequential UX detail: how to show the user what the model is *about to do* before it's finished asking.
 

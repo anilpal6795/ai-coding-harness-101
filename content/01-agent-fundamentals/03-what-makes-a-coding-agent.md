@@ -1,4 +1,4 @@
-# Lesson 1.3: What Makes a Coding Agent
+# What Makes a Coding Agent
 
 We've established what an agent is. Now: what's special about a *coding* agent?
 

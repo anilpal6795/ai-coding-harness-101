@@ -1,4 +1,4 @@
-# Lesson 9.4: Skills and Prompt Templates
+# Skills and Prompt Templates
 
 Pi has a feature called "skills" that's worth understanding because it's a different way to extend an agent — without writing code.
 

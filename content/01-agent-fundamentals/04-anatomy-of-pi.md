@@ -1,4 +1,4 @@
-# Lesson 1.4: Anatomy of pi
+# Anatomy of pi
 
 Throughout this course, pi-mono is your reference implementation. Let's tour it so you know where to look when the course points you somewhere.
 

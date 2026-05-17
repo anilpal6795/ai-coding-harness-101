@@ -1,4 +1,4 @@
-# Lesson 2.2: Streaming
+# Streaming
 
 Without streaming, your coding agent feels broken. With it, it feels alive. This lesson covers what streaming actually is and how to consume it.
 

@@ -1,4 +1,4 @@
-# Lesson 5.2: The Agent Class
+# The Agent Class
 
 Time to build the class. We'll wrap the `runAgent` function from Chapter 4 with state management.
 
