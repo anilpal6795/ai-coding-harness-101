@@ -1,4 +1,4 @@
-# Build an Agentic AI Harness Like Pi — From Scratch
+# AI coding harness 101
 
 A guide on how to build an agentic AI harness, taking [pi-mono](https://github.com/badlogic/pi-mono) as the reference harness. It walks you through every layer of a production-grade coding agent CLI. By the end, you'll have a working mental model of what's actually happening inside tools like Claude Code, Cursor, Aider, and pi itself — and a small, working agent you built yourself.
 
