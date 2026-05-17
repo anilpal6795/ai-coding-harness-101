@@ -119,6 +119,23 @@ export class CourseSidebar extends LitElement {
 										</a>
 									`,
 								)}
+								${ch.examples.length
+									? html`
+											<div class="mt-2 mb-0.5 pl-3 text-[10px] font-semibold uppercase tracking-wider text-[var(--color-muted)]">
+												Examples
+											</div>
+											${ch.examples.map(
+												(ex) => html`
+													<a
+														href=${buildHash(ex.path)}
+														class=${this.linkClass(this.currentPath === ex.path, true)}
+													>
+														${stripNumberPrefix(ex.title)}
+													</a>
+												`,
+											)}
+										`
+									: ""}
 							</div>
 						`}
 			</div>
@@ -126,8 +143,8 @@ export class CourseSidebar extends LitElement {
 	}
 }
 
-// Drops the leading "Chapter N:" or "Lesson X.Y:" prefix from a heading so the
-// nav shows just titles. Source markdown is left untouched.
+// Drops the leading "Chapter N:" / "Lesson X.Y:" / "Example X.Y:" prefix from
+// a heading so the nav shows just titles. Source markdown is left untouched.
 function stripNumberPrefix(title: string): string {
-	return title.replace(/^(?:chapter|lesson|part|section)\s+[\d.]+\s*[:.\-–—]\s*/i, "").trim();
+	return title.replace(/^(?:chapter|lesson|example|part|section)\s+[\d.]+\s*[:.\-–—]\s*/i, "").trim();
 }

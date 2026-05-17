@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { Heading } from "../lib/markdown.js";
 
@@ -69,9 +69,7 @@ export class CourseToc extends LitElement {
 	}
 
 	render() {
-		if (!this.headings.length) {
-			return html`<div class="text-sm text-[var(--color-muted)]">No sections.</div>`;
-		}
+		if (!this.headings.length) return nothing;
 		return html`
 			<div class="text-xs uppercase tracking-wider font-semibold text-[var(--color-muted)] mb-3">
 				On this page

@@ -153,7 +153,7 @@ export class CourseApp extends LitElement {
 					</main>
 					${this.renderRightSidebar()}
 				</div>
-				${this.mobileNavOpen ? this.renderMobileOverlay() : nothing}
+				${this.renderMobileOverlay()}
 			</div>
 		`;
 	}
@@ -252,6 +252,9 @@ export class CourseApp extends LitElement {
 	}
 
 	private renderRightSidebar() {
+		// Skip the aside entirely when there are no headings — lets the main
+		// content area flex into the freed width instead of leaving a blank gutter.
+		if (!this.headings.length) return nothing;
 		return html`
 			<aside
 				class="hidden xl:block w-64 shrink-0 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto scroll-thin py-8 px-4"
@@ -262,17 +265,27 @@ export class CourseApp extends LitElement {
 	}
 
 	private renderMobileOverlay() {
+		// Always mounted so the drawer can slide in/out via CSS transitions.
+		// When closed, the outer container drops pointer events so the page
+		// behind it stays interactive even though the drawer/backdrop are in
+		// the DOM (and the drawer is translated off-screen anyway).
+		const open = this.mobileNavOpen;
+		const containerClass = `fixed inset-0 z-40 lg:hidden ${open ? "pointer-events-auto" : "pointer-events-none"}`;
+		const backdropClass = `absolute inset-0 bg-black/40 transition-opacity duration-200 ease-out ${
+			open ? "opacity-100" : "opacity-0"
+		}`;
+		const drawerClass = `absolute left-0 top-0 h-full w-80 max-w-[85vw] bg-[var(--color-background)] border-r border-[var(--color-border)] overflow-y-auto scroll-thin py-6 px-4 transform transition-transform duration-200 ease-out ${
+			open ? "translate-x-0" : "-translate-x-full"
+		}`;
 		return html`
-			<div class="fixed inset-0 z-40 lg:hidden">
+			<div class=${containerClass} aria-hidden=${open ? "false" : "true"}>
 				<div
-					class="absolute inset-0 bg-black/40"
+					class=${backdropClass}
 					@click=${() => {
 						this.mobileNavOpen = false;
 					}}
 				></div>
-				<aside
-					class="absolute left-0 top-0 h-full w-80 max-w-[85vw] bg-[var(--color-background)] border-r border-[var(--color-border)] overflow-y-auto scroll-thin py-6 px-4"
-				>
+				<aside class=${drawerClass}>
 					<course-sidebar
 						.chapters=${this.tree.chapters}
 						.rootPage=${this.tree.root}
