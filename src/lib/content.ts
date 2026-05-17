@@ -1,16 +1,27 @@
-// Loads all course markdown at build time via Vite's `import.meta.glob`.
+// Loads all guide content at build time via Vite's `import.meta.glob`.
 //
-// Files are stored under `content/` next to the package source. The first
-// path segment after `content/` is the chapter slug (e.g. `00-introduction`),
-// the optional second segment is the lesson slug (e.g. `02-the-big-picture`),
-// and a missing lesson means the file is the chapter README. The top-level
-// `content/README.md` is treated as the course landing page.
+// Two kinds of files are surfaced as pages:
+//
+//   * Markdown under content/<chapter>/[<lesson>.md|README.md]
+//   * Example source files under content/<chapter>/examples/<name>.ts
+//
+// Examples are wrapped in a fenced code block so the standard markdown
+// pipeline (Shiki + copy button) renders them with no special-case rendering
+// downstream.
 
 const RAW_MD = import.meta.glob("../../content/**/*.md", {
 	query: "?raw",
 	import: "default",
 	eager: true,
 }) as Record<string, string>;
+
+const RAW_EXAMPLES = import.meta.glob("../../content/**/examples/*.{ts,tsx,js,mjs}", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+}) as Record<string, string>;
+
+export type PageKind = "lesson" | "example";
 
 export interface Lesson {
 	chapterSlug: string;
@@ -19,6 +30,7 @@ export interface Lesson {
 	source: string;
 	path: string; // canonical hash path (without leading "#")
 	order: number;
+	kind: PageKind;
 }
 
 export interface Chapter {
@@ -27,13 +39,14 @@ export interface Chapter {
 	order: number;
 	readme: Lesson; // every chapter has a README
 	lessons: Lesson[]; // does NOT include the README
-	allPages: Lesson[]; // README first, then lessons in order
+	examples: Lesson[]; // .ts/.js source files from the chapter's examples/ dir
+	allPages: Lesson[]; // README, then lessons, then examples — in reading order
 }
 
 export interface CourseTree {
 	root: Lesson; // top-level README.md
 	chapters: Chapter[];
-	flatPages: Lesson[]; // root + every chapter README + lesson, in reading order
+	flatPages: Lesson[]; // root + every chapter page, in reading order
 }
 
 const CONTENT_PREFIX = "../../content/";
@@ -50,6 +63,37 @@ function extractTitle(source: string, fallback: string): string {
 	const match = source.match(/^#\s+(.+?)\s*$/m);
 	if (match) return match[1].trim();
 	return prettifySlug(fallback);
+}
+
+// Pull a title out of an example's leading JSDoc block. The convention used by
+// the files in content/**/examples/ is:
+//   /**
+//    * Example 3.1: Defining a tool with TypeBox
+//    * ...
+//    */
+// We strip the "Example X.Y:" prefix so the sidebar/breadcrumb get the clean
+// human title, matching how lesson H1s are already stored prefix-free.
+function extractExampleTitle(source: string, fallback: string): string {
+	const m = source.match(/^\s*\/\*\*\s*\n\s*\*\s*Example\s+[\d.]+\s*:?\s*(.+?)\s*$/m);
+	if (m) return m[1].trim();
+	// Looser fallback — any leading `* <title>` line in the first JSDoc block.
+	const loose = source.match(/^\s*\/\*\*\s*\n\s*\*\s*(.+?)\s*$/m);
+	if (loose) return loose[1].trim();
+	return prettifySlug(fallback);
+}
+
+function languageFromExtension(ext: string): string {
+	switch (ext.toLowerCase()) {
+		case "ts":
+			return "typescript";
+		case "tsx":
+			return "tsx";
+		case "js":
+		case "mjs":
+			return "javascript";
+		default:
+			return "plaintext";
+	}
 }
 
 function prettifySlug(slug: string): string {
@@ -72,6 +116,14 @@ interface RawEntry {
 	rel: string; // path relative to content/
 }
 
+interface RawExample {
+	chapterSlug: string;
+	slug: string; // file name without extension, e.g. "01-define-a-tool"
+	source: string; // raw .ts/.js source as authored
+	language: string; // shiki language identifier
+	rel: string; // path relative to content/
+}
+
 function classify(rel: string, source: string): RawEntry | null {
 	const parts = rel.split("/");
 	// Top-level README → root page (handled separately, not a chapter)
@@ -80,6 +132,8 @@ function classify(rel: string, source: string): RawEntry | null {
 		throw new Error(`Unexpected top-level content file: ${rel}`);
 	}
 	const [chapterSlug, file] = parts.length === 2 ? parts : [parts[0], parts.slice(1).join("/")];
+	// Skip anything inside an examples/ subtree — those are handled separately.
+	if (file.startsWith("examples/")) return null;
 	if (file.toLowerCase() === "readme.md") {
 		return { chapterSlug, lessonSlug: "", source, rel };
 	}
@@ -88,13 +142,50 @@ function classify(rel: string, source: string): RawEntry | null {
 	return { chapterSlug, lessonSlug, source, rel };
 }
 
+function classifyExample(rel: string, source: string): RawExample | null {
+	const parts = rel.split("/");
+	// Expect content/<chapter>/examples/<file>.<ext>
+	if (parts.length !== 3 || parts[1] !== "examples") return null;
+	const [chapterSlug, , file] = parts;
+	const dot = file.lastIndexOf(".");
+	if (dot < 0) return null;
+	const slug = file.slice(0, dot);
+	const ext = file.slice(dot + 1);
+	const language = languageFromExtension(ext);
+	return { chapterSlug, slug, source, language, rel };
+}
+
+// Wraps a raw example source file in markdown so the standard renderer can
+// produce a syntax-highlighted code block with the lang header + copy button.
+// The file-path callout links out to the same file on GitHub, so readers can
+// browse history, raw view, or download alongside the rendered code.
+const REPO_BLOB_URL = "https://github.com/anilpal6795/agent-harness-101/blob/main";
+
+function wrapExampleSource(title: string, relPath: string, language: string, code: string): string {
+	const trimmed = code.replace(/\s+$/, "");
+	const githubUrl = `${REPO_BLOB_URL}/${relPath}`;
+	return `# ${title}\n\n> [\`${relPath}\`](${githubUrl})\n\n\`\`\`${language}\n${trimmed}\n\`\`\`\n`;
+}
+
 let cached: CourseTree | null = null;
 
 export function loadCourse(): CourseTree {
 	if (cached) return cached;
 
 	let rootSource: string | null = null;
-	const byChapter = new Map<string, { readme?: RawEntry; lessons: RawEntry[] }>();
+	const byChapter = new Map<
+		string,
+		{ readme?: RawEntry; lessons: RawEntry[]; examples: RawExample[] }
+	>();
+
+	const bucketFor = (slug: string) => {
+		let b = byChapter.get(slug);
+		if (!b) {
+			b = { lessons: [], examples: [] };
+			byChapter.set(slug, b);
+		}
+		return b;
+	};
 
 	for (const [absPath, source] of Object.entries(RAW_MD)) {
 		const rel = stripPrefix(absPath);
@@ -104,10 +195,16 @@ export function loadCourse(): CourseTree {
 		}
 		const entry = classify(rel, source);
 		if (!entry) continue;
-		const bucket = byChapter.get(entry.chapterSlug) ?? { lessons: [] };
+		const bucket = bucketFor(entry.chapterSlug);
 		if (entry.lessonSlug === "") bucket.readme = entry;
 		else bucket.lessons.push(entry);
-		byChapter.set(entry.chapterSlug, bucket);
+	}
+
+	for (const [absPath, source] of Object.entries(RAW_EXAMPLES)) {
+		const rel = stripPrefix(absPath);
+		const entry = classifyExample(rel, source);
+		if (!entry) continue;
+		bucketFor(entry.chapterSlug).examples.push(entry);
 	}
 
 	if (!rootSource) {
@@ -134,6 +231,7 @@ export function loadCourse(): CourseTree {
 				source: bucket.readme.source,
 				path: `/${slug}/`,
 				order,
+				kind: "lesson",
 			};
 			const lessons = bucket.lessons
 				.map<Lesson>((e) => ({
@@ -143,7 +241,24 @@ export function loadCourse(): CourseTree {
 					source: e.source,
 					path: `/${slug}/${e.lessonSlug}`,
 					order: parseOrder(e.lessonSlug),
+					kind: "lesson",
 				}))
+				.sort((a, b) => a.order - b.order || a.lessonSlug.localeCompare(b.lessonSlug));
+
+			const examples = bucket.examples
+				.map<Lesson>((e) => {
+					const title = extractExampleTitle(e.source, e.slug);
+					const relPath = `content/${e.rel}`;
+					return {
+						chapterSlug: slug,
+						lessonSlug: `examples/${e.slug}`,
+						title,
+						source: wrapExampleSource(title, relPath, e.language, e.source),
+						path: `/${slug}/examples/${e.slug}`,
+						order: parseOrder(e.slug),
+						kind: "example",
+					};
+				})
 				.sort((a, b) => a.order - b.order || a.lessonSlug.localeCompare(b.lessonSlug));
 
 			return {
@@ -152,7 +267,8 @@ export function loadCourse(): CourseTree {
 				order,
 				readme: readmeLesson,
 				lessons,
-				allPages: [readmeLesson, ...lessons],
+				examples,
+				allPages: [readmeLesson, ...lessons, ...examples],
 			} satisfies Chapter;
 		})
 		.sort((a, b) => a.order - b.order || a.slug.localeCompare(b.slug));
@@ -164,6 +280,7 @@ export function loadCourse(): CourseTree {
 		source: rootSource,
 		path: "/",
 		order: -1,
+		kind: "lesson",
 	};
 
 	const flatPages: Lesson[] = [root];

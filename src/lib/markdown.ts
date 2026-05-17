@@ -203,8 +203,9 @@ function rewriteLink(href: string, currentChapter: string): string {
 		combined = `/${currentChapter}/${path}`;
 	}
 
-	// Strip ".md" suffixes — the SPA's pages are slug-based.
-	combined = combined.replace(/\.md$/i, "");
+	// Strip ".md" / ".ts" / ".tsx" / ".js" / ".mjs" suffixes — the SPA's pages
+	// are slug-based, and example .ts files are surfaced as pages too.
+	combined = combined.replace(/\.(md|tsx?|mjs|js)$/i, "");
 	// Drop redundant /README at the end (chapter index page).
 	combined = combined.replace(/\/README\/?$/i, "/");
 	combined = normalizePath(combined);
