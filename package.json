@@ -9,7 +9,8 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "tsc --noEmit",
-		"clean": "shx rm -rf dist"
+		"clean": "shx rm -rf dist",
+		"generate:og": "node scripts/generate-og.mjs"
 	},
 	"dependencies": {
 		"lit": "^3.3.1",
@@ -19,6 +20,7 @@
 		"shiki": "^4.0.2"
 	},
 	"devDependencies": {
+		"@resvg/resvg-js": "^2.6.2",
 		"@tailwindcss/vite": "^4.1.17",
 		"@types/markdown-it": "^14.1.2",
 		"shx": "^0.4.0",
